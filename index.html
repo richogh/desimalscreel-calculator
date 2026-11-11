@@ -1,26 +1,69 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>Kirim pesan whatsapp</title>
+    <title>Katalog Produk</title>
 
-<meta property="og:title" content="Kirim pesan whatsapp">
-<meta property="og:description" content="Kirim pesan melalui WhatsApp">
-<meta property="og:image" content="https://richogh.github.io/Veto-Calculator/Image/Model_Tas.png">
-<meta property="og:type" content="website">
-```
+    <!-- Font Lexend -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-```
-<img src="https://richogh.github.io/Veto-Calculator/Image/Model_Tas.png" alt="Model tas">
-```
+<header>
+    <h2>KATALOG PRODUK</h2>
+    <p>Temukan produk yang kamu butuhkan</p>
+</header>
+
+<div class="container">
+
+    <!-- HALAMAN UTAMA -->
+    <section id="home" class="page active">
+
+        <div class="search-box">
+            <input
+                type="text"
+                id="search"
+                placeholder="Cari kategori atau produk..."
+                oninput="cariProduk()"
+            >
+        </div>
+
+        <h3 class="judul" id="judulHome">Kategori Produk</h3>
+
+        <div class="kategori-grid" id="kategoriList"></div>
+
+        <div class="produk-grid" id="hasilSearch"></div>
+
+    </section>
+
+
+    <!-- HALAMAN KATEGORI -->
+    <section id="kategoriPage" class="page">
+
+        <button class="tombol-kembali" onclick="kembali()">
+            ← Kembali
+        </button>
+
+        <h2 id="namaKategori"></h2>
+
+        <div class="produk-grid" id="produkList"></div>
+
+    </section>
+
+</div>
+
+<!-- JavaScript -->
+<script src="script.js"></script>
 
 </body>
 </html>
