@@ -4,136 +4,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Katalog Produk</title>
 
-    <link rel="stylesheet" href="style.css">
-
+    <!-- Font Lexend -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header class="header">
-    <a class="brand" href="./" onclick="bukaHalaman('home'); return false;">
-        <img src="logo.png" alt="Logo Perusahaan">
-        <div>
-            <h2>NAMA PERUSAHAAN</h2>
-            <p>Katalog Produk</p>
-        </div>
-    </a>
-
-    <nav class="navbar">
-        <button onclick="bukaHalaman('home')">Katalog</button>
-        <button onclick="bukaHalaman('testimoniPage')">Testimoni</button>
-        <button onclick="bukaHalaman('portfolioPage')">Portofolio</button>
-    </nav>
+<header>
+    <h2>KATALOG PRODUK</h2>
+    <p>Temukan produk yang kamu butuhkan</p>
 </header>
 
-<main class="container">
+<div class="container">
 
     <!-- HALAMAN UTAMA -->
     <section id="home" class="page active">
-        <div class="hero">
-            <h1>Katalog Produk Kami</h1>
-            <p>Temukan produk yang sesuai dengan kebutuhan Anda.</p>
-        </div>
 
         <div class="search-box">
             <input
                 type="text"
-                id="searchInput"
+                id="search"
                 placeholder="Cari kategori atau produk..."
                 oninput="cariProduk()"
             >
         </div>
 
-        <div id="kategoriArea">
-            <h2 class="section-title">Kategori Produk</h2>
-            <div id="kategoriList" class="kategori-grid"></div>
-        </div>
+        <h3 class="judul" id="judulHome">Kategori Produk</h3>
 
-        <div id="hasilSearchArea" class="hidden">
-            <h2 class="section-title">Hasil Pencarian</h2>
-            <div id="hasilSearch" class="produk-grid"></div>
-        </div>
+        <div class="kategori-grid" id="kategoriList"></div>
+
+        <div class="produk-grid" id="hasilSearch"></div>
+
     </section>
 
 
     <!-- HALAMAN KATEGORI -->
     <section id="kategoriPage" class="page">
-        <button class="tombol-kembali" onclick="kembaliHome()">
+
+        <button class="tombol-kembali" onclick="kembali()">
             ← Kembali
         </button>
 
-        <h1 id="namaKategori"></h1>
-        <p class="subjudul">Produk yang tersedia dalam kategori ini.</p>
+        <h2 id="namaKategori"></h2>
 
-        <div class="bagikan-link">
-            <button onclick="salinLinkKategori()">
-                🔗 Salin Link Kategori
-            </button>
-        </div>
+        <div class="produk-grid" id="produkList"></div>
 
-        <div id="produkList" class="produk-grid"></div>
     </section>
 
 
     <!-- HALAMAN DETAIL PRODUK -->
     <section id="detailPage" class="page">
+
         <button class="tombol-kembali" onclick="kembaliDetail()">
             ← Kembali
         </button>
 
         <div id="detailProduk"></div>
+
     </section>
 
-
-    <!-- HALAMAN TESTIMONI -->
-    <section id="testimoniPage" class="page">
-        <button class="tombol-kembali" onclick="bukaHalaman('home')">
-            ← Kembali
-        </button>
-
-        <h1>Testimoni Pelanggan</h1>
-        <p class="subjudul">
-            Pengalaman pelanggan yang telah menggunakan layanan kami.
-        </p>
-
-        <div id="testimoniList" class="testimoni-grid"></div>
-    </section>
-
-
-    <!-- HALAMAN PORTOFOLIO -->
-    <section id="portfolioPage" class="page">
-        <button class="tombol-kembali" onclick="bukaHalaman('home')">
-            ← Kembali
-        </button>
-
-        <h1>Portofolio Pekerjaan</h1>
-        <p class="subjudul">
-            Beberapa hasil pekerjaan dan proyek kami.
-        </p>
-
-        <div id="portfolioList" class="portfolio-grid"></div>
-    </section>
-
-</main>
-
-
-<!-- TOMBOL WHATSAPP MENGAMBANG -->
-<a
-    id="waBubble"
-    class="wa-bubble"
-    href="#"
-    target="_blank"
-    rel="noopener"
-    aria-label="Hubungi kami melalui WhatsApp"
->
-    <span>☎</span>
-</a>
-
+</div>
 
 <script src="script.js"></script>
 
