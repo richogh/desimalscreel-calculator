@@ -180,7 +180,7 @@ header p {
 .detail-info h2 {
     font-size: 22px;
     font-weight: 600;
-    margin: 0 0 10px;
+    margin: 0 0 3px;
 }
 
 .detail-kategori {
@@ -193,6 +193,7 @@ header p {
 
 .label-harga {
     display: block;
+    padding-top: 30px;
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 10px;
@@ -224,8 +225,13 @@ header p {
 
 .total-harga h2 {
     color: #174ea6;
-    margin: 0;
+    margin: 0 0 5px;
     font-size: 22px;
+}
+
+.total-harga h3 {
+    margin: 0 0 15px;
+    font-size: 20px;
 }
 
 /* WHATSAPP */
