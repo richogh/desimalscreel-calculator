@@ -3,7 +3,7 @@
 // KONFIGURASI UNIVERSAL
 // ======================================
 
-const NOMOR_WA = "6281234567890";
+const NOMOR_WA = "62895388390106";
 
 
 // ======================================
@@ -13,7 +13,7 @@ const NOMOR_WA = "6281234567890";
 const katalog = [
 
     {
-        nama: "Plastik",
+        nama: "Plastik Beras",
         icon: "🛍️",
 
         produk: [
