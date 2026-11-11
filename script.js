@@ -7,7 +7,9 @@ const NOMOR_WA = "62895388390106";
 
 
 // ======================================
-// DATA KATALOG
+// DATA KATALOG DAN HARGA
+// hargaPerPcs = harga satuan berdasarkan
+// jumlah minimum pembelian
 // ======================================
 
 const katalog = [
@@ -21,21 +23,23 @@ const katalog = [
             {
                 nama: "Plastik Custom",
                 gambar: "https://placehold.co/600x400",
-                harga: [
-                    { jumlah: 50, harga: 35000 },
-                    { jumlah: 100, harga: 60000 },
-                    { jumlah: 200, harga: 110000 },
-                    { jumlah: 500, harga: 250000 }
+
+                hargaPerPcs: [
+                    { min: 50, harga: 700 },
+                    { min: 100, harga: 600 },
+                    { min: 200, harga: 550 },
+                    { min: 500, harga: 500 }
                 ]
             },
 
             {
                 nama: "Plastik Polos",
                 gambar: "https://placehold.co/600x400",
-                harga: [
-                    { jumlah: 50, harga: 10000 },
-                    { jumlah: 100, harga: 18000 },
-                    { jumlah: 200, harga: 34000 }
+
+                hargaPerPcs: [
+                    { min: 50, harga: 200 },
+                    { min: 100, harga: 180 },
+                    { min: 200, harga: 170 }
                 ]
             }
 
@@ -52,20 +56,22 @@ const katalog = [
             {
                 nama: "Cup 22 Oz",
                 gambar: "https://placehold.co/600x400",
-                harga: [
-                    { jumlah: 50, harga: 35000 },
-                    { jumlah: 100, harga: 65000 },
-                    { jumlah: 200, harga: 120000 }
+
+                hargaPerPcs: [
+                    { min: 50, harga: 700 },
+                    { min: 100, harga: 650 },
+                    { min: 200, harga: 600 }
                 ]
             },
 
             {
                 nama: "Cup 16 Oz",
                 gambar: "https://placehold.co/600x400",
-                harga: [
-                    { jumlah: 50, harga: 30000 },
-                    { jumlah: 100, harga: 55000 },
-                    { jumlah: 200, harga: 100000 }
+
+                hargaPerPcs: [
+                    { min: 50, harga: 600 },
+                    { min: 100, harga: 550 },
+                    { min: 200, harga: 500 }
                 ]
             }
 
@@ -82,9 +88,10 @@ const katalog = [
             {
                 nama: "Kemasan Produk",
                 gambar: "https://placehold.co/600x400",
-                harga: [
-                    { jumlah: 50, harga: 50000 },
-                    { jumlah: 100, harga: 90000 }
+
+                hargaPerPcs: [
+                    { min: 50, harga: 1000 },
+                    { min: 100, harga: 900 }
                 ]
             }
 
@@ -117,6 +124,90 @@ function formatRupiah(angka) {
 
 
 // ======================================
+// FORMAT SLUG KATEGORI UNTUK URL
+// ======================================
+
+function slugKategori(nama) {
+
+    return nama
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+
+}
+
+
+function urlKategori(index) {
+
+    const url = new URL(window.location.href);
+
+    url.searchParams.set(
+        "kategori",
+        slugKategori(katalog[index].nama)
+    );
+
+    url.hash = "";
+
+    return url.toString();
+
+}
+
+
+// ======================================
+// MENCARI HARGA BERDASARKAN JUMLAH
+// ======================================
+
+function cariHarga(produk, jumlah) {
+
+    const daftarHarga = produk.hargaPerPcs;
+
+    // Urutkan berdasarkan jumlah minimum
+    const hargaUrut = [...daftarHarga].sort(
+        (a, b) => a.min - b.min
+    );
+
+    // Cari harga yang berlaku untuk jumlah tersebut
+    let hargaTerpilih = null;
+
+    for (const item of hargaUrut) {
+
+        if (jumlah >= item.min) {
+            hargaTerpilih = item;
+        }
+
+    }
+
+    return hargaTerpilih;
+
+}
+
+
+// ======================================
+// MEMBUAT KETERANGAN RENTANG HARGA
+// ======================================
+
+function rentangHarga(produk, index) {
+
+    const daftar = [...produk.hargaPerPcs].sort(
+        (a, b) => a.min - b.min
+    );
+
+    const item = daftar[index];
+    const berikutnya = daftar[index + 1];
+
+    if (berikutnya) {
+
+        return `${item.min}–${berikutnya.min - 1} pcs`;
+
+    }
+
+    return `${item.min} pcs ke atas`;
+
+}
+
+
+// ======================================
 // MENAMPILKAN KATEGORI
 // ======================================
 
@@ -129,7 +220,8 @@ function tampilKategori() {
     katalog.forEach((kategori, index) => {
 
         container.innerHTML += `
-            <div class="kategori" onclick="bukaKategori(${index})">
+            <div class="kategori"
+                 onclick="bukaKategori(${index})">
 
                 <div class="icon">${kategori.icon}</div>
 
@@ -147,9 +239,21 @@ function tampilKategori() {
 // MEMBUKA KATEGORI
 // ======================================
 
-function bukaKategori(index) {
+function bukaKategori(index, ubahURL = true) {
 
     const kategori = katalog[index];
+
+    if (!kategori) return;
+
+    if (ubahURL) {
+
+        history.pushState(
+            { halaman: "kategori", index: index },
+            "",
+            urlKategori(index)
+        );
+
+    }
 
     document.getElementById("home").classList.remove("active");
     document.getElementById("detailPage").classList.remove("active");
@@ -183,6 +287,10 @@ function bukaKategori(index) {
 
 function buatKartuProduk(produk, indexKategori, indexProduk) {
 
+    const hargaTermurah = Math.min(
+        ...produk.hargaPerPcs.map(item => item.harga)
+    );
+
     return `
         <div class="produk"
              onclick="bukaProduk(${indexKategori}, ${indexProduk})">
@@ -194,9 +302,7 @@ function buatKartuProduk(produk, indexKategori, indexProduk) {
                 <h4>${produk.nama}</h4>
 
                 <div class="harga">
-                    Mulai ${formatRupiah(
-                        Math.min(...produk.harga.map(item => item.harga))
-                    )}
+                    Mulai ${formatRupiah(hargaTermurah)} / pcs
                 </div>
 
             </div>
@@ -216,6 +322,8 @@ function bukaProduk(indexKategori, indexProduk) {
     const kategori = katalog[indexKategori];
     const produk = kategori.produk[indexProduk];
 
+    if (!produk) return;
+
     halamanAsalDetail =
         document.getElementById("kategoriPage").classList.contains("active")
         ? "kategoriPage"
@@ -228,17 +336,21 @@ function bukaProduk(indexKategori, indexProduk) {
 
     const container = document.getElementById("detailProduk");
 
-    let pilihanHarga = "";
+    let daftarHarga = "";
 
-    produk.harga.forEach((item, index) => {
+    produk.hargaPerPcs
+        .slice()
+        .sort((a, b) => a.min - b.min)
+        .forEach((item, index, daftar) => {
 
-        pilihanHarga += `
-            <option value="${index}">
-                ${item.jumlah} pcs - ${formatRupiah(item.harga)}
-            </option>
-        `;
+            daftarHarga += `
+                <div class="baris-harga">
+                    <span>${rentangHarga(produk, index)}</span>
+                    <strong>${formatRupiah(item.harga)} / pcs</strong>
+                </div>
+            `;
 
-    });
+        });
 
 
     container.innerHTML = `
@@ -259,25 +371,37 @@ function bukaProduk(indexKategori, indexProduk) {
                     Kategori: ${kategori.nama}
                 </div>
 
-                <label class="label-harga">
-                    Pilih Jumlah Pembelian
+                <h3>Daftar Harga</h3>
+
+                <div class="daftar-harga">
+                    ${daftarHarga}
+                </div>
+
+                <label class="label-harga" for="jumlahBeli">
+                    Jumlah Pembelian
                 </label>
 
-                <select
+                <input
                     class="pilihan-harga"
-                    id="pilihanHarga"
-                    onchange="ubahHarga(${indexKategori}, ${indexProduk})"
+                    type="number"
+                    id="jumlahBeli"
+                    min="${Math.min(...produk.hargaPerPcs.map(item => item.min))}"
+                    step="1"
+                    value="${Math.min(...produk.hargaPerPcs.map(item => item.min))}"
+                    oninput="ubahHarga(${indexKategori}, ${indexProduk})"
                 >
-                    ${pilihanHarga}
-                </select>
 
                 <div class="total-harga">
+
+                    <p>Harga per pcs</p>
+
+                    <h3 id="hargaSatuan"></h3>
 
                     <p>Harga Total</p>
 
                     <h2 id="hargaTotal"></h2>
 
-                    <p id="hargaSatuan"></p>
+                    <p id="keteranganHarga"></p>
 
                 </div>
 
@@ -302,26 +426,54 @@ function bukaProduk(indexKategori, indexProduk) {
 
 
 // ======================================
-// MENGUBAH PILIHAN HARGA
+// MENGUBAH HARGA OTOMATIS
 // ======================================
 
 function ubahHarga(indexKategori, indexProduk) {
 
     const produk = katalog[indexKategori].produk[indexProduk];
 
-    const pilihan = document.getElementById("pilihanHarga");
+    const input = document.getElementById("jumlahBeli");
 
-    const index = Number(pilihan.value);
+    const jumlah = Number(input.value);
 
-    const dataHarga = produk.harga[index];
+    const jumlahMinimum = Math.min(
+        ...produk.hargaPerPcs.map(item => item.min)
+    );
 
-    const hargaSatuan = dataHarga.harga / dataHarga.jumlah;
+    const hargaSatuanElement = document.getElementById("hargaSatuan");
+    const hargaTotalElement = document.getElementById("hargaTotal");
+    const keteranganElement = document.getElementById("keteranganHarga");
 
-    document.getElementById("hargaTotal").textContent =
+    if (
+        !Number.isInteger(jumlah) ||
+        jumlah < jumlahMinimum
+    ) {
+
+        hargaSatuanElement.textContent = "-";
+        hargaTotalElement.textContent = "-";
+
+        keteranganElement.textContent =
+            `Minimum pembelian ${jumlahMinimum} pcs.`;
+
+        return;
+
+    }
+
+    const dataHarga = cariHarga(produk, jumlah);
+
+    if (!dataHarga) return;
+
+    const total = jumlah * dataHarga.harga;
+
+    hargaSatuanElement.textContent =
         formatRupiah(dataHarga.harga);
 
-    document.getElementById("hargaSatuan").textContent =
-        `Harga per pcs: ${formatRupiah(hargaSatuan)}`;
+    hargaTotalElement.textContent =
+        formatRupiah(total);
+
+    keteranganElement.textContent =
+        `Harga berlaku untuk pembelian ${jumlah} pcs.`;
 
 }
 
@@ -335,13 +487,29 @@ function kirimWhatsApp(indexKategori, indexProduk) {
     const kategori = katalog[indexKategori];
     const produk = kategori.produk[indexProduk];
 
-    const index = Number(
-        document.getElementById("pilihanHarga").value
+    const jumlah = Number(
+        document.getElementById("jumlahBeli").value
     );
 
-    const pilihan = produk.harga[index];
+    const jumlahMinimum = Math.min(
+        ...produk.hargaPerPcs.map(item => item.min)
+    );
 
-    const hargaSatuan = pilihan.harga / pilihan.jumlah;
+    if (
+        !Number.isInteger(jumlah) ||
+        jumlah < jumlahMinimum
+    ) {
+
+        alert(`Minimum pembelian ${jumlahMinimum} pcs.`);
+
+        return;
+
+    }
+
+    const pilihan = cariHarga(produk, jumlah);
+
+    const hargaSatuan = pilihan.harga;
+    const total = jumlah * hargaSatuan;
 
     const pesan =
 
@@ -350,9 +518,9 @@ function kirimWhatsApp(indexKategori, indexProduk) {
 Produk: ${produk.nama}
 Kategori: ${kategori.nama}
 
-Jumlah: ${pilihan.jumlah} pcs
-Harga Total: ${formatRupiah(pilihan.harga)}
+Jumlah: ${jumlah} pcs
 Harga per pcs: ${formatRupiah(hargaSatuan)}
+Harga Total: ${formatRupiah(total)}
 
 Mohon informasi lebih lanjut. Terima kasih.`;
 
@@ -448,6 +616,12 @@ function kembali() {
 
     document.getElementById("home").classList.add("active");
 
+    const url = new URL(window.location.href);
+
+    url.searchParams.delete("kategori");
+
+    history.pushState({}, "", url.toString());
+
     window.scrollTo(0, 0);
 
 }
@@ -469,7 +643,70 @@ function kembaliDetail() {
 
 
 // ======================================
+// MEMBUKA KATEGORI DARI URL
+// ======================================
+
+function bukaKategoriDariURL() {
+
+    const parameter = new URLSearchParams(window.location.search);
+
+    const slug = parameter.get("kategori");
+
+    if (!slug) return;
+
+    const index = katalog.findIndex(
+        kategori => slugKategori(kategori.nama) === slug
+    );
+
+    if (index !== -1) {
+
+        bukaKategori(index, false);
+
+    }
+
+}
+
+
+// ======================================
+// NAVIGASI BROWSER BACK / FORWARD
+// ======================================
+
+window.addEventListener("popstate", function () {
+
+    const parameter = new URLSearchParams(window.location.search);
+
+    const slug = parameter.get("kategori");
+
+    if (slug) {
+
+        const index = katalog.findIndex(
+            kategori => slugKategori(kategori.nama) === slug
+        );
+
+        if (index !== -1) {
+
+            bukaKategori(index, false);
+
+        }
+
+    } else {
+
+        document.getElementById("kategoriPage").classList.remove("active");
+        document.getElementById("detailPage").classList.remove("active");
+
+        document.getElementById("home").classList.add("active");
+
+        window.scrollTo(0, 0);
+
+    }
+
+});
+
+
+// ======================================
 // JALANKAN
 // ======================================
 
 tampilKategori();
+
+bukaKategoriDariURL();
