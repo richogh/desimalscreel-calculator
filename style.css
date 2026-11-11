@@ -1,0 +1,159 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Lexend', sans-serif;
+    background: #f5f6fa;
+    color: #222;
+}
+
+header {
+    background: #174ea6;
+    color: white;
+    padding: 22px 16px;
+    text-align: center;
+}
+
+header h2 {
+    margin: 0;
+    font-weight: 600;
+}
+
+header p {
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.judul {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* SEARCH */
+
+.search-box {
+    margin-bottom: 25px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: #174ea6;
+}
+
+/* KATEGORI */
+
+.kategori-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+.kategori {
+    background: white;
+    border-radius: 12px;
+    padding: 25px 10px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #00000010;
+    transition: 0.2s;
+}
+
+.kategori:hover {
+    transform: translateY(-4px);
+}
+
+.kategori .icon {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.kategori h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* PRODUK */
+
+.produk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.produk {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px #00000010;
+}
+
+.produk img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    background: #eee;
+}
+
+.produk-info {
+    padding: 12px;
+}
+
+.produk-info h4 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.harga {
+    color: #174ea6;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* TOMBOL */
+
+.tombol-kembali {
+    background: #174ea6;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: inherit;
+    margin-bottom: 20px;
+}
+
+.kosong {
+    text-align: center;
+    padding: 30px;
+    color: #888;
+    font-size: 14px;
+}
