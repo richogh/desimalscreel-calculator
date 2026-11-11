@@ -113,6 +113,12 @@ header p {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 8px #00000010;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.produk:hover {
+    transform: translateY(-3px);
 }
 
 .produk img {
@@ -138,7 +144,7 @@ header p {
     font-size: 13px;
 }
 
-/* TOMBOL */
+/* TOMBOL KEMBALI */
 
 .tombol-kembali {
     background: #174ea6;
@@ -151,9 +157,111 @@ header p {
     margin-bottom: 20px;
 }
 
+/* DETAIL PRODUK */
+
+.detail-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px #00000010;
+}
+
+.detail-gambar {
+    width: 100%;
+    max-height: 350px;
+    object-fit: contain;
+    background: #eee;
+}
+
+.detail-info {
+    padding: 20px;
+}
+
+.detail-info h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 10px;
+}
+
+.detail-kategori {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+/* PILIHAN HARGA */
+
+.label-harga {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.pilihan-harga {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 20px;
+    background: white;
+}
+
+.total-harga {
+    background: #f0f4ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.total-harga p {
+    margin: 0 0 5px;
+    font-size: 13px;
+    color: #666;
+}
+
+.total-harga h2 {
+    color: #174ea6;
+    margin: 0;
+    font-size: 22px;
+}
+
+/* WHATSAPP */
+
+.tombol-wa {
+    width: 100%;
+    padding: 15px;
+    background: #25D366;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tombol-wa:hover {
+    background: #1ebc59;
+}
+
+/* KOSONG */
+
 .kosong {
     text-align: center;
     padding: 30px;
     color: #888;
     font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    .produk-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
