@@ -1,248 +1,326 @@
 
-// ======================================
-// KONFIGURASI UNIVERSAL
-// ======================================
+// =====================================
+// PENGATURAN WHATSAPP
+// =====================================
 
 const NOMOR_WA = "6281234567890";
 
 
-// ======================================
-// DATA KATALOG
-// ======================================
+// =====================================
+// DATA KATALOG PRODUK
+// =====================================
 
 const katalog = [
 
     {
-        nama: "Plastik",
-        icon: "🛍️",
-
-        produk: [
-
-            {
-                nama: "Plastik Custom",
-                gambar: "https://placehold.co/600x400",
-                harga: [
-                    { jumlah: 50, harga: 35000 },
-                    { jumlah: 100, harga: 60000 },
-                    { jumlah: 200, harga: 110000 },
-                    { jumlah: 500, harga: 250000 }
-                ]
-            },
-
-            {
-                nama: "Plastik Polos",
-                gambar: "https://placehold.co/600x400",
-                harga: [
-                    { jumlah: 50, harga: 10000 },
-                    { jumlah: 100, harga: 18000 },
-                    { jumlah: 200, harga: 34000 }
-                ]
-            }
-
-        ]
-    },
-
-
-    {
         nama: "Cup",
         icon: "🥤",
-
         produk: [
-
             {
-                nama: "Cup 22 Oz",
-                gambar: "https://placehold.co/600x400",
+                nama: "Cup Printing 22oz",
+                gambar: "images/cup.jpg",
+                deskripsi: "Cup printing untuk kebutuhan usaha minuman.",
                 harga: [
-                    { jumlah: 50, harga: 35000 },
-                    { jumlah: 100, harga: 65000 },
-                    { jumlah: 200, harga: 120000 }
-                ]
-            },
-
-            {
-                nama: "Cup 16 Oz",
-                gambar: "https://placehold.co/600x400",
-                harga: [
-                    { jumlah: 50, harga: 30000 },
-                    { jumlah: 100, harga: 55000 },
-                    { jumlah: 200, harga: 100000 }
+                    { jumlah: 100, harga: 70000 },
+                    { jumlah: 500, harga: 300000 },
+                    { jumlah: 1000, harga: 490000 }
                 ]
             }
-
         ]
     },
 
+    {
+        nama: "Plastik",
+        icon: "🛍️",
+        produk: [
+            {
+                nama: "Plastik Custom",
+                gambar: "images/plastik.jpg",
+                deskripsi: "Plastik custom dengan desain sesuai kebutuhan.",
+                harga: [
+                    { jumlah: 100, harga: 50000 },
+                    { jumlah: 500, harga: 200000 },
+                    { jumlah: 1000, harga: 350000 }
+                ]
+            }
+        ]
+    },
 
     {
         nama: "Kemasan",
         icon: "📦",
-
         produk: [
-
             {
                 nama: "Kemasan Produk",
-                gambar: "https://placehold.co/600x400",
+                gambar: "images/kemasan.jpg",
+                deskripsi: "Kemasan untuk menunjang kebutuhan bisnis.",
                 harga: [
-                    { jumlah: 50, harga: 50000 },
-                    { jumlah: 100, harga: 90000 }
+                    { jumlah: 100, harga: 60000 },
+                    { jumlah: 500, harga: 275000 },
+                    { jumlah: 1000, harga: 500000 }
                 ]
             }
-
         ]
     }
 
 ];
 
 
-// ======================================
-// VARIABEL NAVIGASI
-// ======================================
+// =====================================
+// DATA TESTIMONI
+// =====================================
 
-let halamanAsalDetail = "kategoriPage";
+const testimoni = [
+    {
+        nama: "Pelanggan A",
+        bintang: 5,
+        pesan: "Pelayanan cepat dan hasil produk sangat memuaskan."
+    },
+    {
+        nama: "Pelanggan B",
+        bintang: 5,
+        pesan: "Kualitas produk bagus dan pengiriman tepat waktu."
+    },
+    {
+        nama: "Pelanggan C",
+        bintang: 5,
+        pesan: "Harga bersaing dan mudah melakukan pemesanan."
+    }
+];
 
 
-// ======================================
+// =====================================
+// DATA PORTOFOLIO
+// =====================================
+
+const portfolio = [
+    {
+        nama: "Plastik Custom",
+        gambar: "images/plastik.jpg",
+        deskripsi: "Hasil cetak plastik custom untuk pelanggan."
+    },
+    {
+        nama: "Cup Printing",
+        gambar: "images/cup.jpg",
+        deskripsi: "Hasil pekerjaan cetak cup."
+    },
+    {
+        nama: "Kemasan Produk",
+        gambar: "images/kemasan.jpg",
+        deskripsi: "Produksi kemasan untuk kebutuhan bisnis."
+    }
+];
+
+
+// =====================================
+// VARIABEL HALAMAN
+// =====================================
+
+let kategoriAktif = null;
+let halamanAsalDetail = "home";
+
+
+// =====================================
 // FORMAT RUPIAH
-// ======================================
+// =====================================
 
 function formatRupiah(angka) {
-
     return new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR",
         maximumFractionDigits: 0
     }).format(angka);
-
 }
 
 
-// ======================================
+// =====================================
+// MEMBUAT SLUG KATEGORI
+// =====================================
+
+function slugKategori(nama) {
+    return nama
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+}
+
+
+// =====================================
+// MEMBUAT URL KATEGORI
+// =====================================
+
+function urlKategori(index) {
+    const url = new URL(window.location.href);
+
+    url.searchParams.set(
+        "kategori",
+        slugKategori(katalog[index].nama)
+    );
+
+    url.hash = "";
+
+    return url.toString();
+}
+
+
+// =====================================
+// MENAMPILKAN HALAMAN
+// =====================================
+
+function bukaHalaman(id) {
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    window.scrollTo(0, 0);
+
+    // Membersihkan URL kategori saat kembali ke halaman utama
+    if (id === "home") {
+        history.pushState({}, "", window.location.pathname);
+
+        document.getElementById("searchInput").value = "";
+
+        document.getElementById("kategoriArea").classList.remove("hidden");
+        document.getElementById("hasilSearchArea").classList.add("hidden");
+    }
+}
+
+
+// =====================================
 // MENAMPILKAN KATEGORI
-// ======================================
+// =====================================
 
 function tampilKategori() {
-
     const container = document.getElementById("kategoriList");
 
     container.innerHTML = "";
 
     katalog.forEach((kategori, index) => {
-
         container.innerHTML += `
-            <div class="kategori" onclick="bukaKategori(${index})">
-
-                <div class="icon">${kategori.icon}</div>
-
+            <a
+                href="${urlKategori(index)}"
+                class="kategori-card"
+                onclick="event.preventDefault(); bukaKategori(${index});"
+            >
+                <div class="kategori-icon">${kategori.icon}</div>
                 <h3>${kategori.nama}</h3>
-
-            </div>
+            </a>
         `;
-
     });
-
 }
 
 
-// ======================================
+// =====================================
 // MEMBUKA KATEGORI
-// ======================================
+// =====================================
 
-function bukaKategori(index) {
+function bukaKategori(index, ubahURL = true) {
 
-    const kategori = katalog[index];
+    kategoriAktif = index;
 
-    document.getElementById("home").classList.remove("active");
-    document.getElementById("detailPage").classList.remove("active");
+    if (ubahURL) {
+        history.pushState(
+            { halaman: "kategori", index: index },
+            "",
+            urlKategori(index)
+        );
+    }
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
 
     document.getElementById("kategoriPage").classList.add("active");
 
-    document.getElementById("namaKategori").textContent = kategori.nama;
+    document.getElementById("namaKategori").textContent =
+        katalog[index].nama;
 
+    tampilProduk(index);
+
+    window.scrollTo(0, 0);
+}
+
+
+// =====================================
+// MENAMPILKAN PRODUK
+// =====================================
+
+function tampilProduk(index) {
     const container = document.getElementById("produkList");
 
     container.innerHTML = "";
 
-    kategori.produk.forEach((produk, indexProduk) => {
-
+    katalog[index].produk.forEach((produk, indexProduk) => {
         container.innerHTML += buatKartuProduk(
             produk,
             index,
             indexProduk
         );
-
     });
-
-    window.scrollTo(0, 0);
-
 }
 
 
-// ======================================
-// TEMPLATE KARTU PRODUK
-// ======================================
+// =====================================
+// MEMBUAT KARTU PRODUK
+// =====================================
 
 function buatKartuProduk(produk, indexKategori, indexProduk) {
 
-    return `
-        <div class="produk"
-             onclick="bukaProduk(${indexKategori}, ${indexProduk})">
+    const hargaMulai = Math.min(
+        ...produk.harga.map(item => item.harga)
+    );
 
+    return `
+        <div
+            class="produk"
+            onclick="bukaProduk(${indexKategori}, ${indexProduk})"
+        >
             <img src="${produk.gambar}" alt="${produk.nama}">
 
             <div class="produk-info">
-
-                <h4>${produk.nama}</h4>
-
-                <div class="harga">
-                    Mulai ${formatRupiah(
-                        Math.min(...produk.harga.map(item => item.harga))
-                    )}
-                </div>
-
+                <h3>${produk.nama}</h3>
+                <p>Mulai ${formatRupiah(hargaMulai)}</p>
             </div>
-
         </div>
     `;
-
 }
 
 
-// ======================================
+// =====================================
 // MEMBUKA DETAIL PRODUK
-// ======================================
+// =====================================
 
 function bukaProduk(indexKategori, indexProduk) {
 
-    const kategori = katalog[indexKategori];
-    const produk = kategori.produk[indexProduk];
+    const halamanKategori =
+        document.getElementById("kategoriPage").classList.contains("active");
 
-    halamanAsalDetail =
-        document.getElementById("kategoriPage").classList.contains("active")
+    halamanAsalDetail = halamanKategori
         ? "kategoriPage"
         : "home";
 
-    document.getElementById("home").classList.remove("active");
-    document.getElementById("kategoriPage").classList.remove("active");
+    const produk = katalog[indexKategori].produk[indexProduk];
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
 
     document.getElementById("detailPage").classList.add("active");
-
-    const container = document.getElementById("detailProduk");
 
     let pilihanHarga = "";
 
     produk.harga.forEach((item, index) => {
-
         pilihanHarga += `
             <option value="${index}">
                 ${item.jumlah} pcs - ${formatRupiah(item.harga)}
             </option>
         `;
-
     });
 
-
-    container.innerHTML = `
-
+    document.getElementById("detailProduk").innerHTML = `
         <div class="detail-card">
 
             <img
@@ -255,164 +333,147 @@ function bukaProduk(indexKategori, indexProduk) {
 
                 <h2>${produk.nama}</h2>
 
-                <div class="detail-kategori">
-                    Kategori: ${kategori.nama}
-                </div>
+                <p>${produk.deskripsi || ""}</p>
 
-                <label class="label-harga">
-                    Pilih Jumlah Pembelian
-                </label>
+                <label>Pilih Paket Harga</label>
 
                 <select
-                    class="pilihan-harga"
                     id="pilihanHarga"
+                    class="pilihan-harga"
                     onchange="ubahHarga(${indexKategori}, ${indexProduk})"
                 >
                     ${pilihanHarga}
                 </select>
 
                 <div class="total-harga">
+                    <p>Total Harga:</p>
+                    <h3 id="totalHarga"></h3>
 
-                    <p>Harga Total</p>
-
-                    <h2 id="hargaTotal"></h2>
-
-                    <p id="hargaSatuan"></p>
-
+                    <p>Harga per pcs:</p>
+                    <strong id="hargaPerPcs"></strong>
                 </div>
 
                 <button
                     class="tombol-wa"
                     onclick="kirimWhatsApp(${indexKategori}, ${indexProduk})"
                 >
-                    Kirim Pesanan via WhatsApp
+                    Pesan Melalui WhatsApp
                 </button>
 
             </div>
 
         </div>
-
     `;
 
     ubahHarga(indexKategori, indexProduk);
 
     window.scrollTo(0, 0);
-
 }
 
 
-// ======================================
-// MENGUBAH PILIHAN HARGA
-// ======================================
+// =====================================
+// MENGHITUNG HARGA
+// =====================================
 
 function ubahHarga(indexKategori, indexProduk) {
 
     const produk = katalog[indexKategori].produk[indexProduk];
 
-    const pilihan = document.getElementById("pilihanHarga");
+    const indexPilihan = Number(
+        document.getElementById("pilihanHarga").value
+    );
 
-    const index = Number(pilihan.value);
+    const pilihan = produk.harga[indexPilihan];
 
-    const dataHarga = produk.harga[index];
+    const hargaPerPcs = pilihan.harga / pilihan.jumlah;
 
-    const hargaSatuan = dataHarga.harga / dataHarga.jumlah;
+    document.getElementById("totalHarga").textContent =
+        formatRupiah(pilihan.harga);
 
-    document.getElementById("hargaTotal").textContent =
-        formatRupiah(dataHarga.harga);
-
-    document.getElementById("hargaSatuan").textContent =
-        `Harga per pcs: ${formatRupiah(hargaSatuan)}`;
-
+    document.getElementById("hargaPerPcs").textContent =
+        formatRupiah(hargaPerPcs);
 }
 
 
-// ======================================
-// KIRIM PESAN WHATSAPP
-// ======================================
+// =====================================
+// PEMESANAN WHATSAPP
+// =====================================
 
 function kirimWhatsApp(indexKategori, indexProduk) {
 
     const kategori = katalog[indexKategori];
     const produk = kategori.produk[indexProduk];
 
-    const index = Number(
+    const indexPilihan = Number(
         document.getElementById("pilihanHarga").value
     );
 
-    const pilihan = produk.harga[index];
+    const pilihan = produk.harga[indexPilihan];
 
-    const hargaSatuan = pilihan.harga / pilihan.jumlah;
+    const hargaPerPcs = pilihan.harga / pilihan.jumlah;
 
-    const pesan =
+    const pesan = `
+Halo, saya tertarik dengan produk berikut.
 
-`Halo, saya ingin memesan produk.
-
-Produk: ${produk.nama}
 Kategori: ${kategori.nama}
-
+Produk: ${produk.nama}
 Jumlah: ${pilihan.jumlah} pcs
-Harga Total: ${formatRupiah(pilihan.harga)}
-Harga per pcs: ${formatRupiah(hargaSatuan)}
+Total Harga: ${formatRupiah(pilihan.harga)}
+Harga per pcs: ${formatRupiah(hargaPerPcs)}
 
-Mohon informasi lebih lanjut. Terima kasih.`;
+Mohon informasi lebih lanjut.
+    `.trim();
 
     const url =
         `https://wa.me/${NOMOR_WA}?text=${encodeURIComponent(pesan)}`;
 
     window.open(url, "_blank");
-
 }
 
 
-// ======================================
-// FITUR SEARCH
-// ======================================
+// =====================================
+// PENCARIAN PRODUK
+// =====================================
 
 function cariProduk() {
 
     const keyword = document
-        .getElementById("search")
+        .getElementById("searchInput")
         .value
         .toLowerCase()
         .trim();
 
-    const kategoriList = document.getElementById("kategoriList");
-    const hasilSearch = document.getElementById("hasilSearch");
-
-    const judul = document.getElementById("judulHome");
+    const kategoriArea = document.getElementById("kategoriArea");
+    const hasilArea = document.getElementById("hasilSearchArea");
+    const hasilContainer = document.getElementById("hasilSearch");
 
     if (keyword === "") {
-
-        kategoriList.style.display = "grid";
-        hasilSearch.innerHTML = "";
-
-        judul.textContent = "Kategori Produk";
-
+        kategoriArea.classList.remove("hidden");
+        hasilArea.classList.add("hidden");
         return;
-
     }
 
-    kategoriList.style.display = "none";
+    kategoriArea.classList.add("hidden");
+    hasilArea.classList.remove("hidden");
 
-    judul.textContent = "Hasil Pencarian";
-
-    let hasil = [];
+    hasilContainer.innerHTML = "";
 
     katalog.forEach((kategori, indexKategori) => {
 
         kategori.produk.forEach((produk, indexProduk) => {
 
-            if (
-                produk.nama.toLowerCase().includes(keyword) ||
-                kategori.nama.toLowerCase().includes(keyword)
-            ) {
+            const cocokKategori =
+                kategori.nama.toLowerCase().includes(keyword);
 
-                hasil.push(
-                    buatKartuProduk(
-                        produk,
-                        indexKategori,
-                        indexProduk
-                    )
+            const cocokProduk =
+                produk.nama.toLowerCase().includes(keyword);
+
+            if (cocokKategori || cocokProduk) {
+
+                hasilContainer.innerHTML += buatKartuProduk(
+                    produk,
+                    indexKategori,
+                    indexProduk
                 );
 
             }
@@ -421,55 +482,183 @@ function cariProduk() {
 
     });
 
-    if (hasil.length === 0) {
-
-        hasilSearch.innerHTML = `
-            <div class="kosong">
-                Produk tidak ditemukan.
-            </div>
+    if (hasilContainer.innerHTML === "") {
+        hasilContainer.innerHTML = `
+            <p class="kosong">Produk tidak ditemukan.</p>
         `;
-
-        return;
-
     }
-
-    hasilSearch.innerHTML = hasil.join("");
-
 }
 
 
-// ======================================
-// KEMBALI DARI KATEGORI
-// ======================================
+// =====================================
+// KEMBALI KE HALAMAN UTAMA
+// =====================================
 
-function kembali() {
-
-    document.getElementById("kategoriPage").classList.remove("active");
-
-    document.getElementById("home").classList.add("active");
-
-    window.scrollTo(0, 0);
-
+function kembaliHome() {
+    bukaHalaman("home");
 }
 
 
-// ======================================
+// =====================================
 // KEMBALI DARI DETAIL PRODUK
-// ======================================
+// =====================================
 
 function kembaliDetail() {
 
-    document.getElementById("detailPage").classList.remove("active");
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
 
-    document.getElementById(halamanAsalDetail).classList.add("active");
+    document
+        .getElementById(halamanAsalDetail)
+        .classList.add("active");
 
     window.scrollTo(0, 0);
-
 }
 
 
-// ======================================
-// JALANKAN
-// ======================================
+// =====================================
+// SALIN LINK KATEGORI
+// =====================================
+
+function salinLinkKategori() {
+
+    if (kategoriAktif === null) return;
+
+    const link = urlKategori(kategoriAktif);
+
+    navigator.clipboard.writeText(link)
+        .then(() => {
+            alert("Link kategori berhasil disalin!");
+        })
+        .catch(() => {
+            prompt("Salin link berikut:", link);
+        });
+}
+
+
+// =====================================
+// MENAMPILKAN TESTIMONI
+// =====================================
+
+function tampilTestimoni() {
+
+    const container = document.getElementById("testimoniList");
+
+    container.innerHTML = "";
+
+    testimoni.forEach(item => {
+
+        container.innerHTML += `
+            <div class="testimoni-card">
+
+                <div class="bintang">
+                    ${"★".repeat(item.bintang)}
+                </div>
+
+                <h3>${item.nama}</h3>
+
+                <p>${item.pesan}</p>
+
+            </div>
+        `;
+
+    });
+}
+
+
+// =====================================
+// MENAMPILKAN PORTOFOLIO
+// =====================================
+
+function tampilPortfolio() {
+
+    const container = document.getElementById("portfolioList");
+
+    container.innerHTML = "";
+
+    portfolio.forEach(item => {
+
+        container.innerHTML += `
+            <div class="portfolio-card">
+
+                <img
+                    src="${item.gambar}"
+                    alt="${item.nama}"
+                >
+
+                <div class="portfolio-info">
+
+                    <h3>${item.nama}</h3>
+
+                    <p>${item.deskripsi}</p>
+
+                </div>
+
+            </div>
+        `;
+
+    });
+}
+
+
+// =====================================
+// TOMBOL WHATSAPP MENGAMBANG
+// =====================================
+
+function aturWhatsAppBubble() {
+
+    const tombol = document.getElementById("waBubble");
+
+    tombol.href = `https://wa.me/${NOMOR_WA}`;
+}
+
+
+// =====================================
+// MEMBUKA KATEGORI DARI URL
+// =====================================
+
+function bukaKategoriDariURL() {
+
+    const parameter = new URLSearchParams(
+        window.location.search
+    );
+
+    const slug = parameter.get("kategori");
+
+    if (!slug) {
+        bukaHalaman("home");
+        return;
+    }
+
+    const index = katalog.findIndex(
+        kategori => slugKategori(kategori.nama) === slug
+    );
+
+    if (index !== -1) {
+        bukaKategori(index, false);
+    } else {
+        bukaHalaman("home");
+    }
+}
+
+
+// =====================================
+// MENANGANI TOMBOL BACK BROWSER
+// =====================================
+
+window.addEventListener("popstate", () => {
+    bukaKategoriDariURL();
+});
+
+
+// =====================================
+// INISIALISASI
+// =====================================
 
 tampilKategori();
+tampilTestimoni();
+tampilPortfolio();
+aturWhatsAppBubble();
+
+bukaKategoriDariURL();
