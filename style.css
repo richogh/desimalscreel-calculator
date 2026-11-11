@@ -183,6 +183,16 @@ header p {
     margin: 0 0 3px;
 }
 
+.detail-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 10px;
+}
+
+.baris-harga {
+    margin: 0 0 2px;
+}
+
 .detail-kategori {
     color: #888;
     font-size: 13px;
